@@ -20,9 +20,12 @@ Tailwind v4 is wired through the `@tailwindcss/vite` plugin, not PostCSS. There 
 ## Structure
 
 - `index.html` → `src/main.jsx` (mounts `<App />` in `StrictMode`) → `src/App.jsx`.
-- The whole landing page currently lives in `src/App.jsx` as local components (`Logo`, `Header`, `Hero`, `Features`, `Footer`). The data arrays at the top of the file (`navLinks`, `features`) drive the nav and feature cards. The `navLinks` array is shared by the desktop nav, the mobile menu and the footer.
-- Navigation uses in-page anchors (`#funktioner`, `#om`, `#priser`, `#kontakt`), not a router. Only `#funktioner` (Features) and `#kontakt` (Footer) have matching sections so far.
-- Styling is done entirely with Tailwind utility classes inline. Icons are inline SVG `<path>` elements; there is no icon library.
+- The site is a tongue-in-cheek landing page for Frebs, a "premium tech" company whose product is snapping spaghetti in half so it fits in smaller pots. Dark theme (`zinc-950`) with amber as the pasta/accent colour; headings use `font-display` (Space Grotesk), body uses Inter. Both fonts load from Google Fonts in `index.html`, and `--font-*` is defined in `src/index.css`.
+- `src/App.jsx` holds all page sections as local components. The content (nav, stats, features, steps, testimonials, plans) lives in data arrays at the top of the file. `navLinks` is shared by the desktop nav, the mobile menu and the footer.
+- Navigation uses in-page anchors (`#teknologi`, `#om`, `#priser`, `#kontakt`) with `scroll-mt-20` to clear the sticky header. There is no router.
+- `src/components/SnapDemo.jsx` is the interactive hero illustration: an SVG (viewBox 480×400) of spaghetti strands above a pot. Each strand goes `whole → snapped → fallen`. The phases are kept in a ref mirrored to state, so timeouts read current values. Each half is two nested `<g>`s: the outer one handles the translate into the pot and the inner one handles the rotation around the break point. Both animate with CSS transitions on inline `transform` styles, which use SVG user units as px. The snap sound is synthesised with the Web Audio API, so there is no audio file.
+- Custom keyframe animations (`animate-crumb`, `animate-pop`, `animate-steam`, `animate-rise`) are defined inside `@theme` in `src/index.css`. To scale or rotate SVG elements around their own centre, add `[transform-box:fill-box] origin-center`.
+- Icons are inline SVG `<path>` elements. There is no icon library.
 - `src/assets/` holds leftover files from the Vite template that `App.jsx` does not import.
 
 ## Conventions
